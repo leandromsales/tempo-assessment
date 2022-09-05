@@ -1,0 +1,21 @@
+version: "3.6"
+
+networks:
+  tempo-network:
+    name: tempo-network
+ 
+services:
+
+  # the orchestrator service
+  orchestrator:
+    build:
+      context: .
+
+    environment:
+      SPRING_PROFILES_ACTIVE: db
+
+    ports:
+      - "8080:8080"
+
+    networks:
+      - tempo-network

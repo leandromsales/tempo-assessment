@@ -1,0 +1,143 @@
+buildscript {
+    ext {
+        // https://kotlinlang.org/docs/whatsnew16.html#kotlin-jvm
+        kotlinVersion = '1.6.10'
+        springBootVersion = '2.7.3'
+    }
+
+    repositories {
+        mavenCentral()
+
+        // For src/gradle/tests.gradle
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
+        classpath("org.jetbrains.kotlin:kotlin-allopen:${kotlinVersion}")
+        classpath("org.jetbrains.kotlin:kotlin-noarg:${kotlinVersion}")
+
+        // For src/gradle/tests
+        classpath 'com.adarshr:gradle-test-logger-plugin:2.1.1'
+
+        // For src/gradle/jacoco
+        // Fixed for Gradle 7.* https://github.com/ksoichiro/gradle-console-reporter/issues/15
+        classpath 'com.github.ksoichiro:gradle-console-reporter:0.6.3'
+    }
+}
+
+apply plugin: 'kotlin'
+apply plugin: 'kotlin-spring'
+apply plugin: 'kotlin-jpa'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+// Test Infrastructure
+apply from: 'src/gradle/tests.gradle'
+
+// PACKAGING: Java
+apply from: 'src/gradle/jar.gradle'
+
+group = "io.tempo.services"
+version = '1.0.0-RELEASE'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(16)
+    }
+}
+
+jar {
+    archiveFileName = "team-service-orchestrator.jar"
+}
+
+// Upgrade of JVM target requires changing the version of spring, which comes from springboot
+// Kotlin is compatible with JDK 17, but our Sprinboot version is still 2.3.x because of config properties behavior
+// https://stackoverflow.com/questions/66700334/eclipsetomcat-failed-to-read-candidate-component-class/66703463#66703463
+compileKotlin {
+    kotlinOptions {
+        freeCompilerArgs = ['-Xjsr305=strict']
+        jvmTarget = '16'
+    }
+}
+
+compileTestKotlin {
+    kotlinOptions {
+        freeCompilerArgs = ['-Xjsr305=strict']
+        jvmTarget = '16'
+    }
+}
+
+// For SNAPSHOT dependencies, pull them right away
+// https://stackoverflow.com/questions/42058626/how-to-get-newest-snapshot-of-a-dependency-without-changing-version-in-gradle/42058780#42058780
+configurations.all {
+    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+}
+
+repositories {
+    mavenCentral()
+
+}
+
+configurations {
+    developmentOnly
+    runtimeClasspath {
+        extendsFrom developmentOnly
+    }
+}
+
+ext {
+    // https://spring.io/blog/2021/07/07/spring-cloud-hoxton-sr12-has-been-released
+    set('springCloudVersion', "Hoxton.SR12")
+
+    // https://codecentric.github.io/spring-boot-admin/2.3.1/#_sba_client
+    // SpringBoot 2.3.x version support... Make sure to upgrade to 2.5.1 when upgrading springboot
+    set('adminVersion', "2.3.1")
+    jackson_version = "2.13.3"
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+        mavenBom "de.codecentric:spring-boot-admin-sample-custom-ui:${adminVersion}"
+    }
+}
+
+dependencies {
+    implementation ("org.apache.commons:commons-lang3:3.0")
+
+    // SpringBoot dependencies
+    implementation("org.springframework.boot:spring-boot-starter-actuator:$springBootVersion") // added for tracing, but actuators also used
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa:$springBootVersion")
+    implementation("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
+    implementation("org.springframework.boot:spring-boot-starter-validation:$springBootVersion")
+    implementation("org.springdoc:springdoc-openapi-ui:1.6.11")
+    implementation("org.springdoc:springdoc-openapi-kotlin:1.6.11")
+    developmentOnly("org.springframework.boot:spring-boot-devtools:$springBootVersion")
+    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor:$springBootVersion")
+
+    // Kotlin Dependencies
+    implementation 'io.github.microutils:kotlin-logging-jvm:2.1.23'
+    implementation("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
+    implementation 'org.javassist:javassist:3.29.1-GA'
+
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jackson_version")
+    implementation("com.fasterxml.jackson.core:jackson-core:$jackson_version")
+    implementation("com.fasterxml.jackson.core:jackson-databind:$jackson_version")
+    implementation("com.fasterxml.jackson.core:jackson-annotations:$jackson_version")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jackson_version")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-hibernate5:$jackson_version")
+
+    // https://github.com/Kotlin/kotlinx.coroutines
+    // https://programming-idioms.org/idiom/56/launch-1000-parallel-tasks-and-wait-for-completion/3538/kotlin
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0'
+
+    // Databases
+//    runtimeOnly 'org.postgresql:postgresql'
+    runtimeOnly 'org.hsqldb:hsqldb:2.7.0'
+
+}
