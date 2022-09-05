@@ -50,10 +50,6 @@ java {
     }
 }
 
-jar {
-    archiveFileName = "team-service-orchestrator.jar"
-}
-
 // Upgrade of JVM target requires changing the version of spring, which comes from springboot
 // Kotlin is compatible with JDK 17, but our Sprinboot version is still 2.3.x because of config properties behavior
 // https://stackoverflow.com/questions/66700334/eclipsetomcat-failed-to-read-candidate-component-class/66703463#66703463
