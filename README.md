@@ -46,8 +46,6 @@ As a result of this command, you will see some outputs similar to this one:
 
 I have implemented OpenAPI 3.0 Support, as well as Postman Collection and Swagger documentations.
 
-Actuators (service status): http://localhost:8080/actuator
-
 ### Open API Documentation:
 
 The OpenAPI 3.0 documentation is available in the following URL:
@@ -68,6 +66,18 @@ Swagger documentation is available in the following URL:
 - http://localhost:8080/docs/swagger/index.html
 
 <img width="1158" alt="image" src="https://user-images.githubusercontent.com/1322483/188509863-15778c67-82ae-4e0e-b10c-f5ffbfe55f5d.png">
+
+## Observability
+
+I have implemented the basic observability function called Spring Boot Actuator.
+
+### Actuator (service status):
+
+The service status can be checked in the following URL:
+
+http://localhost:8080/actuator
+
+<img width="676" alt="image" src="https://user-images.githubusercontent.com/1322483/188512039-6b9e4998-c04b-4a23-a405-b6a26ed56fb2.png">
 
 ## Improvements to be done
 
