@@ -73,19 +73,19 @@ Swagger documentation is available in the following URL:
 
 1. Support user login
 2. Protect API endpoints that must be invoked only by admin users
-2.1. Only allow administrative operations if role is admin, otherwise user will only be able to edit is profile
+  2.1. Only allow administrative operations if role is admin, otherwise user will only be able to edit is profile
 3. Support for email and push notification in some operations
 4. Users operation
-4.1. Forgotten password 
-4.2. Upload avatar
-4.3. Limit users quantity with pagination
-4.4. Login history
-4.5. Search user by attributes
-4.6. Validate avatarUrl when POST/PATCH a user
+  4.1. Forgotten password 
+  4.2. Upload avatar
+  4.3. Limit users quantity with pagination
+  4.4. Login history
+  4.5. Search user by attributes
+  4.6. Validate avatarUrl when POST/PATCH a user
 5. Teams 
-5.1. Support a user to create multiple teams
-5.2. Categorization
-5.3. Get Teams a user is the leader
-5.4. Search teams by attributes
+  5.1. Support a user to create multiple teams
+  5.2. Categorization
+  5.3. Get Teams a user is the leader
+  5.4. Search teams by attributes
 6. Implementation of Projects
 
