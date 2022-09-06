@@ -41,6 +41,7 @@ As a result of this command, you will see some outputs similar to this one:
 - Kotlin 1.6
 - Spring Boot 2.7.8
 - Docker (including Docker Compose)
+- HSQLDB (it could be also any other relational database)
 
 ## API Documentation
 
