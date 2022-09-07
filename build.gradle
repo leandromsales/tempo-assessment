@@ -36,10 +36,19 @@ apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
 // Test Infrastructure
-apply from: 'src/gradle/tests.gradle'
+apply from: 'tests.gradle'
 
-// PACKAGING: Java
-apply from: 'src/gradle/jar.gradle'
+// Packaging
+bootJar {
+    archiveBaseName = rootProject.name
+    archiveVersion =  rootProject.version
+    baseName = rootProject.name
+    version = project.version
+}
+
+jar {
+    archiveFileName = "teams-services-orchestrator.jar"
+}
 
 group = "io.tempo.services"
 version = '1.0.0-RELEASE'

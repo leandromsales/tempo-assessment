@@ -1,0 +1,52 @@
+
+// https://github.com/radarsh/gradle-test-logger-plugin#standard-theme
+// https://plugins.gradle.org/plugin/com.adarshr.test-logger
+apply plugin: "com.adarshr.test-logger"
+
+testlogger {
+    theme 'standard'
+    showExceptions true
+    showStackTraces true
+    showFullStackTraces false
+    showCauses true
+    slowThreshold 2000
+    showSummary true
+    showSimpleNames false
+    showPassed true
+    showSkipped true
+    showFailed true
+    showStandardStreams true
+    showPassedStandardStreams true
+    showSkippedStandardStreams true
+    showFailedStandardStreams true
+    logLevel 'lifecycle'
+}
+
+dependencies {
+    // Testing Frameworks
+    testImplementation('org.springframework.boot:spring-boot-starter-test')
+
+    testImplementation group: 'org.hsqldb', name: 'hsqldb', version: '2.7.0'
+//    testImplementation group: 'com.h2database', name: 'h2', version: '1.4.200'
+    // Mockito
+    // https://www.infoworld.com/article/3543268/junit-5-tutorial-part-2-unit-testing-spring-mvc-with-junit-5.html
+//    testImplementation('org.mockito:mockito-core:3.6.0')
+//    testImplementation('org.mockito:mockito-junit-jupiter:3.6.0')
+//    testImplementation('org.powermock:powermock-api-mockito2:2.0.9')
+}
+
+test {
+  useJUnitPlatform()
+
+  ignoreFailures = false
+
+  maxParallelForks = 1
+
+//    debugOptions {
+//        enabled = true
+//        port = 4455
+//        server = true
+//       suspend = true
+//    }
+}
+
