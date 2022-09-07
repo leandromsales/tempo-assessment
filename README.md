@@ -30,41 +30,41 @@ team id
 - [x] Look up memberships for a role (method io.tempo.teams.roles.RolesController.lookupMembershipOfRole)
 - [x] Create a new role (method io.tempo.teams.roles.RolesController.add)
 - [x] Assign a role to a member ((method io.tempo.teams.roles.RolesController.setUserRole))
-- [ ] A React web app written in TypeScript that uses the APIs implemented 
+- [ ] (Need more time for that) A React web app written in TypeScript that uses the APIs implemented 
 
 ## Run the application
 
-I have implemented docker/docker-compose to run the application.
+I have implemented docker/docker-compose to run the application. I have implemented a bash script to run everything all commands or you can execute each step (build, test and run) separately. 
 
 ### All in one (build, test and run)
-
-I have implemented a shell script for build, test and run the application. For this case, just run the following command:
 
 ```shell
 ./build-and-run.sh
 ```
 
-### For building the app
+### Step 1: Build the app
 ```shell
 gradle build -x test
 ```
 
-### For running tests
+### Step 2: Test the app
 ```shell
 gradle test
 ```
 
-### For build the app container
+### Step 3: Build the docker container
 ```shell
 docker build -t tempo/services/orchestrator .
 ```
 
-### Run the app
+### Step 4: Run the app
 ```shell
 docker-compose up
 ```
 
-As a result of this command, you will see some outputs similar to this one:
+## Logs and Output
+
+As a result of executing the app, you will see some outputs similar to the following:
 
 <img width="1183" alt="image" src="https://user-images.githubusercontent.com/1322483/188510051-03ea2721-6208-4169-808a-2c96ad8c4d16.png">
 
