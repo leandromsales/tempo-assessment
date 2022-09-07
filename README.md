@@ -9,7 +9,7 @@ This is the project basic documentation for the Tempo Orchestrator, composed by 
 
 I have implemented the resolution of supporting the concept of Role by adding a Role Controller, which uses the Role Service, which then uses the Role Repositories. The main idea was to implement a flexible way to link a User to any Role in a given Team, so that a User can have one Role, but different Role in different Teams, as shown in the following diagram:
 
-<img width="672" alt="image" src="https://user-images.githubusercontent.com/1322483/188969644-eea791a9-19f9-4526-8629-965d4d53ac2e.png">
+<img width="731" alt="image" src="https://user-images.githubusercontent.com/1322483/188971643-57cc9ed3-5bf8-4ae4-ab2f-2a2407a5b182.png">
 
 ### Main activities
 
