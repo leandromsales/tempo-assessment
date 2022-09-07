@@ -1,5 +1,33 @@
 # Tempo Users, Teams and Roles
 
+This is the project basic documentation for the Tempo Orchestrator, composed by an implementation of two services:
+
+- Users
+- Teams 
+
+## Approach the Problem and Solution
+
+### Main activities
+
+- [x] (Re)implementation of the same Tempo API, but including:
+  - Restful API for Users and Teams endpoints, such that allowing CRUD operations based on REST dialect (POST, GET, PATCH and DELETE);
+- [x] Usage of Spring Actuator for basic observability;
+- [x] Support for OpenAPI 3.1 using Spring Docs, including Swagger and .yaml for import the API/Documentation in Postman;
+- [x] Web client implementation (using Feign) for loading current data from the online API; 
+- [x] Docker image using OpenJDK 16 with Docker Compose;
+- [x] Fields validations and view layer modifications using Spring Boot Validation and Annotations, including the development of our custom validation annotations (examples available in io.tempo.teams.util.validators);  
+- [x] Unit tests using JUnit 5 and Gradle (see below);
+- [x] API automation tests implemented using Postman;- 
+
+### Extra points activities implemented
+
+- [x] Look up a role for a membership, where membership is defined by a user id and a
+team id
+- [x] Look up memberships for a role (method io.tempo.teams.roles.RolesController.lookupMembershipOfRole)
+- [x] Create a new role (method io.tempo.teams.roles.RolesController.add)
+- [x] Assign a role to a member ((method io.tempo.teams.roles.RolesController.setUserRole))
+- [ ] A React web app written in TypeScript that uses the APIs implemented 
+
 ## Run the application
 
 I have implemented docker/docker-compose to run the application.
@@ -82,21 +110,24 @@ http://localhost:8080/actuator
 
 ## Improvements to be done
 
-1. Support user login
-2. Protect API endpoints that must be invoked only by admin users
-  2.1. Only allow administrative operations if role is admin, otherwise user will only be able to edit is profile
-3. Support for email and push notification in some operations
-4. Users operation
-  4.1. Forgotten password 
-  4.2. Upload avatar
-  4.3. Limit users quantity with pagination
-  4.4. Login history
-  4.5. Search user by attributes
-  4.6. Validate avatarUrl when POST/PATCH a user
-5. Teams 
-  5.1. Support a user to create multiple teams
-  5.2. Categorization
-  5.3. Get Teams a user is the leader
-  5.4. Search teams by attributes
-6. Implementation of Projects
+1. Support user authentication
+   - Protect API endpoints that must be invoked only by admin users
+   - Only allow administrative operations if role is admin, otherwise user will only be able to edit is profile
+2. Support for email and push notification in some operations
+3. Users operation
+   - Forgotten password
+   - Upload avatar
+   - Limit users quantity with pagination
+   - Login history
+   - Search user by attributes
+   - Validate avatarUrl when POST/PATCH a user
+4. Teams
+   - Support a user to create multiple teams
+   - Categorization
+   - Get Teams a user is the leader
+   - Search teams by attributes
+5. Implementation of Projects
+6. Thinking about scalability, I would split this application in two different microservices:
+   1. users
+   2. teams 
 
