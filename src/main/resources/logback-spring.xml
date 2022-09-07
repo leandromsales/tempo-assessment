@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+
+This configuration of console with ch.qos.logback makes the output of the logs be in color.
+
+* Traces - https://medium.com/@lombos.monika/distributed-tracing-latency-analysis-for-microservices-4ae3b82f3537
+- When adding Trace Baggage Headers, add them here as well
+
+ -->
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+    <springProperty scope="context" name="springAppName" source="spring.application.name"/>
+    <springProperty scope="context" name="springProfilesActive" source="spring.profiles.active"/>
+
+    <!-- You can override this to have a custom pattern -->
+    <!--  https://logback.qos.ch/manual/layouts.html#ClassicPatternLayout -->
+    <property name="CONSOLE_LOG_PATTERN"
+              value="%clr(%d{yyyy-MM-dd'T'HH:mm:ss,SSSZ}){faint} %clr(%5p [app=${springAppName:-},prof=${springProfilesActive:-default}][tid=%X{X-B3-TraceId:-},sid=%X{X-B3-SpanId:-},sxp=%X{X-Span-Export:-}][uid=%X{X-Tempo-Uid:-}]) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"/>
+    <!-- Appender to log to console -->
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <!-- Minimum logging level to be presented in the console logs-->
+            <level>DEBUG</level>
+        </filter>
+        <encoder>
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+            <charset>utf8</charset>
+        </encoder>
+    </appender>
+
+    <!-- https://stackoverflow.com/questions/42751269/feign-logging-not-working/59651045#59651045 -->
+    <logger name="feign.Logger" level="DEBUG" />
+
+    <root level="INFO">
+        <appender-ref ref="console"/>
+    </root>
+</configuration>
