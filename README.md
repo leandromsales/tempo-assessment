@@ -75,7 +75,11 @@ As a result of executing the app, you will see some outputs similar to the follo
 - Docker (including Docker Compose)
 - HSQLDB (it could be also any other relational database)
 
-## API Documentation
+## API Usage
+
+I have not implemented the React app, but all the endpoint calls can be tested via Postman and/or Swagger interface, as explained in the next section.
+
+## Documentation
 
 I have implemented OpenAPI 3.0 Support, as well as Postman Collection and Swagger documentations.
 
