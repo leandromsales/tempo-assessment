@@ -24,7 +24,8 @@ I have implemented the solution of supporting the concept of Role by adding a Ro
 - [x] Docker image using OpenJDK 16 with Docker Compose;
 - [x] Fields validations and view layer modifications using Spring Boot Validation and Annotations, including the development of our custom validation annotations (examples available in io.tempo.teams.util.validators);  
 - [x] Unit tests using JUnit 5 and Gradle (see below);
-- [x] API automation tests implemented using Postman;- 
+- [x] API automation tests implemented using Postman;
+- [x] Implementation of a bootstrap data machanism based on yaml (eg. to add pre-defined roles)
 
 ### Extra points activities implemented
 
