@@ -1,9 +1,10 @@
 # Tempo Users, Teams and Roles
 
-This is the project basic documentation for the Tempo Orchestrator, composed by an implementation of two services:
+This is the project basic documentation for the Tempo Orchestrator, composed by an implementation of 3 services:
 
 - Users
-- Teams 
+- Teams
+- Role
 
 ## Approach the Problem and Solution
 
