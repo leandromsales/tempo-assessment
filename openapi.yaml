@@ -1,7 +1,13 @@
 openapi: 3.0.1
 info:
-  title: OpenAPI definition
-  version: v0
+  title: Tempo Service API
+  description: This is the Tempo API documentation created during the interview process
+    for a software engineer position at Tempo Software.
+  termsOfService: http://swagger.io/terms/
+  license:
+    name: Apache 2.0
+    url: http://springdoc.org
+  version: "1.0"
 servers:
 - url: http://localhost:8080
   description: Generated server url
@@ -636,3 +642,7 @@ components:
           format: int64
         name:
           type: string
+  securitySchemes:
+    basicScheme:
+      type: http
+      scheme: basic

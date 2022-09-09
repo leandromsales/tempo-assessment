@@ -1,5 +1,5 @@
-echo ">>> Running gradle build.."
-gradle build -x test
+echo ">>> Running gradle build and tests..."
+gradle build 
 
 echo ">>> Building container..."
 docker build -t tempo/services/orchestrator .
