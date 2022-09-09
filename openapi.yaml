@@ -1,0 +1,638 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: http://localhost:8080
+  description: Generated server url
+paths:
+  /users:
+    get:
+      tags:
+      - UserServiceClient
+      summary: getAll
+      description: Get the list of users.
+      operationId: getAll
+      responses:
+        "200":
+          description: The list of users.
+          content:
+            '*/*':
+              schema:
+                type: object
+    post:
+      tags:
+      - UserServiceClient
+      summary: add
+      description: Add a user.
+      operationId: add
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        "500":
+          description: Internal Server Error.
+          content:
+            '*/*':
+              schema:
+                type: object
+        "200":
+          description: The added user instance.
+          headers:
+            Location:
+              style: simple
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Invalid parameter (e.g externalId already in use).
+          content:
+            '*/*':
+              schema:
+                type: object
+  /teams:
+    get:
+      tags:
+      - TeamsController
+      summary: getAll
+      operationId: getAll_1
+      responses:
+        "200":
+          description: All teams.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Team_Public'
+    post:
+      tags:
+      - TeamsController
+      summary: addTeam
+      operationId: add_1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Team'
+        required: true
+      responses:
+        "200":
+          description: Team is added.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Team'
+  /teams/{id}/roles:
+    post:
+      tags:
+      - TeamsController
+      summary: addUserToTeam
+      description: Add user to a team.
+      operationId: addUserToTeam
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoleMembership'
+        required: true
+      responses:
+        "200":
+          description: User is added to the Team.
+    delete:
+      tags:
+      - TeamsController
+      summary: removeUserToTeam
+      description: Remove user from a team.
+      operationId: removeUserFromTeam
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoleMembership'
+        required: true
+      responses:
+        "200":
+          description: User is removed from the Team.
+  /roles:
+    get:
+      tags:
+      - RolesController
+      summary: getAll
+      operationId: getAll_2
+      responses:
+        "200":
+          description: All roles.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Role_Public'
+    post:
+      tags:
+      - RolesController
+      summary: addRole
+      operationId: add_2
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Role'
+        required: true
+      responses:
+        "200":
+          description: Role is added.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Role'
+  /users/{id}:
+    get:
+      tags:
+      - UserServiceClient
+      summary: get
+      description: Get a user by id.
+      operationId: get
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "404":
+          description: User not found.
+          content:
+            '*/*':
+              schema:
+                type: object
+        "200":
+          description: The user.
+          content:
+            '*/*':
+              schema:
+                type: object
+    delete:
+      tags:
+      - UserServiceClient
+      summary: delete
+      description: Delete user.
+      operationId: delete
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "500":
+          description: Internal Server Error.
+          content:
+            '*/*':
+              schema:
+                type: object
+        "200":
+          description: The deleted user.
+          content:
+            '*/*':
+              schema:
+                type: object
+    patch:
+      tags:
+      - UserServiceClient
+      summary: update
+      description: Update a user.
+      operationId: update
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        "200":
+          description: The updated user.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/User'
+        "500":
+          description: Internal Server Error.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/User'
+  /teams/{id}:
+    get:
+      tags:
+      - TeamsController
+      summary: get
+      operationId: get_1
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Team is found by the given id.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Team_Internal'
+    delete:
+      tags:
+      - TeamsController
+      summary: delete
+      description: Delete team.
+      operationId: delete_1
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "500":
+          description: Internal Server Error.
+          content:
+            '*/*':
+              schema:
+                type: object
+        "200":
+          description: The deleted team.
+          content:
+            '*/*':
+              schema:
+                type: object
+    patch:
+      tags:
+      - TeamsController
+      summary: update
+      operationId: update_1
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Team'
+      responses:
+        "200":
+          description: If team is successfully updated.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Team'
+  /roles/{id}:
+    get:
+      tags:
+      - RolesController
+      summary: get
+      description: A Membership role of a user in a team.
+      operationId: lookupMembershipOfRole_1
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "500":
+          description: Internal Server Error.
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RoleMembership'
+        "200":
+          description: Role is found by the given id.
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RoleMembership'
+    delete:
+      tags:
+      - RolesController
+      summary: deleteRole
+      description: Delete role.
+      operationId: delete_2
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "500":
+          description: Internal Server Error.
+          content:
+            '*/*':
+              schema:
+                type: object
+        "200":
+          description: The deleted role.
+          content:
+            '*/*':
+              schema:
+                type: object
+    patch:
+      tags:
+      - RolesController
+      summary: updateRole
+      operationId: update_2
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Role'
+      responses:
+        "200":
+          description: If role is successfully updated.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Role'
+  /teams/{id}/users:
+    get:
+      tags:
+      - TeamsController
+      summary: getAllUsers
+      description: Get all users of a given team.
+      operationId: getAllUsers
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User_Public'
+        "200":
+          description: All team's users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User_Public'
+  /roles/{teamId}/users/{userId}:
+    get:
+      tags:
+      - RolesController
+      summary: getMembership
+      description: A Membership role of a user in a team.
+      operationId: lookupUserRole
+      parameters:
+      - name: teamId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "500":
+          description: Internal Server Error.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Role'
+        "200":
+          description: The user role.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Role'
+components:
+  schemas:
+    User:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        displayName:
+          type: string
+          readOnly: true
+        avatarUrl:
+          type: string
+        location:
+          type: string
+    Role:
+      required:
+      - id
+      - name
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+    RolesTeamsUsers:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/RolesTeamsUsersId'
+        user:
+          $ref: '#/components/schemas/User'
+        team:
+          $ref: '#/components/schemas/Team'
+        role:
+          $ref: '#/components/schemas/Role'
+    RolesTeamsUsersId:
+      type: object
+      properties:
+        userId:
+          type: string
+        teamId:
+          type: string
+        roleId:
+          type: integer
+          format: int64
+    Team:
+      required:
+      - id
+      - name
+      - teamMemberIds
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        teamMemberIds:
+          type: array
+          items:
+            $ref: '#/components/schemas/RolesTeamsUsers'
+        teamLeadId:
+          $ref: '#/components/schemas/User'
+    RoleMembership:
+      required:
+      - user
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/User'
+        team:
+          $ref: '#/components/schemas/Team'
+        role:
+          $ref: '#/components/schemas/Role'
+    Team_Public:
+      required:
+      - id
+      - name
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+    Role_Internal:
+      required:
+      - id
+      - name
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+    RolesTeamsUsersId_Internal:
+      type: object
+      properties:
+        userId:
+          type: string
+        teamId:
+          type: string
+        roleId:
+          type: integer
+          format: int64
+    RolesTeamsUsers_Internal:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/RolesTeamsUsersId_Internal'
+        user:
+          $ref: '#/components/schemas/User_Internal'
+        team:
+          $ref: '#/components/schemas/Team_Internal'
+        role:
+          $ref: '#/components/schemas/Role_Internal'
+    Team_Internal:
+      required:
+      - id
+      - name
+      - teamMemberIds
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        teamMemberIds:
+          type: array
+          items:
+            $ref: '#/components/schemas/RolesTeamsUsers_Internal'
+        teamLeadId:
+          $ref: '#/components/schemas/User_Internal'
+    User_Internal:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        displayName:
+          type: string
+          readOnly: true
+        avatarUrl:
+          type: string
+        location:
+          type: string
+    User_Public:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          type: string
+        displayName:
+          type: string
+          readOnly: true
+    Role_Public:
+      required:
+      - id
+      - name
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
