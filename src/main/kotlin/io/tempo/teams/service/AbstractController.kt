@@ -21,13 +21,6 @@ import org.springframework.web.context.request.WebRequest
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler
 import java.util.regex.Pattern
 
-/**
- * Abstract controller error that can be reused by other services.
- * Based on https://howtodoinjava.com/spring-boot2/spring-rest-request-validation/
- * @author leandromsales
- *
- */
-
 @ControllerAdvice(annotations = [ RestController::class, Controller::class ])
 abstract class AbstractController : ResponseEntityExceptionHandler() {
 

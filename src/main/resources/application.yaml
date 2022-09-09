@@ -18,6 +18,12 @@ logging:
     org.hibernate.type.descriptor.sql.BasicBinder: DEBUG
     io.tempo.teams: DEBUG
 
+feign:
+  client:
+    config:
+      default:
+        loggerLevel: FULL
+
 springdoc:
   api-docs:
     path: /docs/openapi
@@ -41,3 +47,32 @@ server:
       suffix:
       file-date-format:
       pattern: "[ACCESS] %h %t %{org.apache.catalina.AccessLog.RemoteAddr}r http_method=%m http_path=%U http_query=%q http_protocol=%H http_status=%s latency_total=%Dms latency_commit=%Fms response_size=%Bbytes %S %u tid=%{X-Tempo-Tid}i uid=%{X-Tempo-Uid}i x_b3_traceid=%{X-B3-TraceId}o"
+
+io:
+  tempo:
+    teams:
+      bootstrap:
+        enabled: true
+
+        users:
+          bootstrapData: true
+          quantity: 10
+
+        teams:
+          bootstrapData: true
+          quantity: 10
+
+        roles:
+          bootstrapData: true
+          bootstrapInstances:
+            - name: Developer
+            - name: Product Owner
+            - name: Tester
+
+      clients:
+        users:
+          url: https://cgjresszgg.execute-api.eu-west-1.amazonaws.com/users/
+
+        teams:
+          url: https://cgjresszgg.execute-api.eu-west-1.amazonaws.com/teams/
+
