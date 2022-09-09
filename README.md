@@ -144,4 +144,5 @@ http://localhost:8080/actuator
    1. users
    2. teams 
 7. Better handle some operations exceptions (eg. add a user to a team)
+8. Return a better structure for not found requests (eg. getting a user that id is not in the database). Nowadays we are return null.
 
