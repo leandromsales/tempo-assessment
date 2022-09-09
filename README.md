@@ -116,7 +116,9 @@ The service status can be checked in the following URL:
 
 http://localhost:8080/actuator
 
+<p align="center">
 <img width="676" alt="image" src="https://user-images.githubusercontent.com/1322483/188512039-6b9e4998-c04b-4a23-a405-b6a26ed56fb2.png">
+</p>
 
 ## Improvements to be done
 
