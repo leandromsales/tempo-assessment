@@ -20,7 +20,7 @@ I have implemented the solution of supporting the concept of Role by adding a Ro
   - Restful API for Users and Teams endpoints, such that allowing CRUD operations based on REST dialect (POST, GET, PATCH and DELETE);
 - [x] Usage of Spring Actuator for basic observability;
 - [x] Support for OpenAPI 3.1 using Spring Docs, including Swagger and .yaml for import the API/Documentation in Postman;
-- [x] Web client implementation (using Feign) for loading current data from the online API; 
+- [x] Web client implementation (using Feign) for loading current data (users and teams) from the Tempo API. You can set the max quantity for each set of data by providing the property io.tempo.teams.bootstrap.users.quantity or IO_TEMPO_TEAMS_BOOTSTRAP_USERS_QUANTITY env variable. This also applies for the teams); 
 - [x] Docker image using OpenJDK 16 with Docker Compose;
 - [x] Fields validations and view layer modifications using Spring Boot Validation and Annotations, including the development of our custom validation annotations (examples available in io.tempo.teams.util.validators);  
 - [x] Unit tests using JUnit 5 and Gradle (see below);
