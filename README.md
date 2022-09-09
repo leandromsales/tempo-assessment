@@ -143,4 +143,5 @@ http://localhost:8080/actuator
 6. Thinking about scalability, I would split this application in two different microservices:
    1. users
    2. teams 
+7. Better handle some operations exceptions (eg. add a user to a team)
 
