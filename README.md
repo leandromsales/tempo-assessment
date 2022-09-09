@@ -25,7 +25,8 @@ I have implemented the solution of supporting the concept of Role by adding a Ro
 - [x] Fields validations and view layer modifications using Spring Boot Validation and Annotations, including the development of our custom validation annotations (examples available in io.tempo.teams.util.validators);  
 - [x] Unit tests using JUnit 5 and Gradle (see below);
 - [x] API automation tests implemented using Postman;
-- [x] Implementation of a bootstrap data machanism based on yaml (eg. to add pre-defined roles)
+- [x] Implementation of a bootstrap data machanism based on yaml (eg. to add pre-defined roles);
+- [x] Ability to associate team members with roles for a team.
 
 ### Extra points activities implemented
 
@@ -33,7 +34,7 @@ I have implemented the solution of supporting the concept of Role by adding a Ro
 team id (method io.tempo.teams.roles.RolesController.lookupUserRole)
 - [x] Look up memberships for a role (method io.tempo.teams.roles.RolesController.lookupMembershipOfRole)
 - [x] Create a new role (method io.tempo.teams.roles.RolesController.add)
-- [x] Assign a role to a member ((method io.tempo.teams.roles.RolesController.setUserRole))
+- [x] Assign a role to a member (method io.tempo.teams.roles.RolesController.setUserRole)
 - [ ] (Need more time for that) A React web app written in TypeScript that uses the APIs implemented 
 
 ## Run the application
