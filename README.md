@@ -1,15 +1,18 @@
 # Tempo Users, Teams and Roles
 
-This is the project basic documentation for the Tempo Orchestrator, composed by an implementation of two services:
+This is the project basic documentation for the Tempo Orchestrator, composed by an implementation of 3 services:
 
 - Users
-- Teams 
+- Teams
+- Role
 
 ## Approach the Problem and Solution
 
-I have implemented the resolution of supporting the concept of Role by adding a Role Controller, which uses the Role Service, which then uses the Role Repositories. The main idea was to implement a flexible way to link a User to any Role in a given Team, so that a User can have one Role, but different Role in different Teams, as shown in the following diagram:
+I have implemented the solution of supporting the concept of Role by adding a Role Controller, which uses the Role Service, which then uses the Role Repositories. The main idea was to implement a flexible way to link a User to any Role in a given Team, so that a User can have one Role, but different Role for different Teams, as shown in the following diagram:
 
-<img width="731" alt="image" src="https://user-images.githubusercontent.com/1322483/188971643-57cc9ed3-5bf8-4ae4-ab2f-2a2407a5b182.png">
+<p align="center">
+<img width="639" alt="image" src="https://user-images.githubusercontent.com/1322483/189249774-3c4d0351-ae22-4346-938e-a79828f3d4df.png">
+</p>
 
 ### Main activities
 
@@ -21,12 +24,13 @@ I have implemented the resolution of supporting the concept of Role by adding a 
 - [x] Docker image using OpenJDK 16 with Docker Compose;
 - [x] Fields validations and view layer modifications using Spring Boot Validation and Annotations, including the development of our custom validation annotations (examples available in io.tempo.teams.util.validators);  
 - [x] Unit tests using JUnit 5 and Gradle (see below);
-- [x] API automation tests implemented using Postman;- 
+- [x] API automation tests implemented using Postman;
+- [x] Implementation of a bootstrap data machanism based on yaml (eg. to add pre-defined roles)
 
 ### Extra points activities implemented
 
 - [x] Look up a role for a membership, where membership is defined by a user id and a
-team id
+team id (method io.tempo.teams.roles.RolesController.lookupUserRole)
 - [x] Look up memberships for a role (method io.tempo.teams.roles.RolesController.lookupMembershipOfRole)
 - [x] Create a new role (method io.tempo.teams.roles.RolesController.add)
 - [x] Assign a role to a member ((method io.tempo.teams.roles.RolesController.setUserRole))
@@ -114,7 +118,9 @@ The service status can be checked in the following URL:
 
 http://localhost:8080/actuator
 
+<p align="center">
 <img width="676" alt="image" src="https://user-images.githubusercontent.com/1322483/188512039-6b9e4998-c04b-4a23-a405-b6a26ed56fb2.png">
+</p>
 
 ## Improvements to be done
 
@@ -138,4 +144,6 @@ http://localhost:8080/actuator
 6. Thinking about scalability, I would split this application in two different microservices:
    1. users
    2. teams 
+7. Better handle some operations exceptions (eg. add a user to a team)
+8. Return a better structure for not found requests (eg. getting a user that id is not in the database). Nowadays we are return null.
 
