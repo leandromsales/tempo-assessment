@@ -29,7 +29,7 @@ I have implemented the solution of supporting the concept of Role by adding a Ro
 ### Extra points activities implemented
 
 - [x] Look up a role for a membership, where membership is defined by a user id and a
-team id
+team id (method io.tempo.teams.roles.RolesController.lookupUserRole)
 - [x] Look up memberships for a role (method io.tempo.teams.roles.RolesController.lookupMembershipOfRole)
 - [x] Create a new role (method io.tempo.teams.roles.RolesController.add)
 - [x] Assign a role to a member ((method io.tempo.teams.roles.RolesController.setUserRole))
