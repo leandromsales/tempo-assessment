@@ -33,7 +33,7 @@ class User {
         message = "Field 'id' must be provided.")
     @Column
     @JsonView(View.Public::class)
-    var id: String? = UUID.randomUUID().toString()
+    var id: String? = null
 
     @NotBlankWithMinMax(min = 3, max = 300, message = "The field 'firstName' must have at least 3 chars and max " +
             "300 chars.", groups = [ UsersPost::class, UserPut::class ])

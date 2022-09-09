@@ -14,6 +14,7 @@ import javax.persistence.*
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 import mu.KotlinLogging
+import javax.annotation.PostConstruct
 
 @Entity(name = "teams")
 @Table(indexes = [
@@ -29,9 +30,8 @@ class Team {
         @Id
         @NotNull(groups = [ TeamsPatch::class, RoleMembershipPost::class ], message = "Field 'id' must be provided.")
         @Column
-        @JsonProperty(access = JsonProperty.Access.READ_ONLY)
         @JsonView(View.Public::class)
-        var id: String? = UUID.randomUUID().toString()
+        var id: String? = null
 
         @field: NotBlank(message = "Field 'name' must be provided.", groups = [ TeamsPost::class ])
         @field: NullOrNotBlank(message = "Field 'name' must be provided.", groups = [ TeamsPatch::class ])
@@ -50,7 +50,7 @@ class Team {
         @PrimaryKeyJoinColumn
         @JsonView(View.Internal::class)
         @JsonSerialize(converter = TeamMemberIdsSerializer::class)
-        var teamMemberIds: List<RolesTeamsUsers>? = null
+        var teamMemberIds: MutableList<RolesTeamsUsers> = mutableListOf()
 
         fun updateNotNullFields(team: Team) {
                 this.updateNotNullFields(team.id, team.name, team.teamLead)

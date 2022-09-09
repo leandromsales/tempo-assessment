@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
+import java.util.*
 import javax.annotation.PostConstruct
 
 @Service
@@ -62,6 +63,10 @@ class TeamsService {
 
     @Throws(TempoException::class)
     fun save(team: Team) : Team {
+
+        if (team.id == null) {
+            team.id = UUID.randomUUID().toString()
+        }
 
         var savedTeam: Team? = null
 
