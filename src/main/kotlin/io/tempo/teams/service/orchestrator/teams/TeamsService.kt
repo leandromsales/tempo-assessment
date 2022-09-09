@@ -2,10 +2,11 @@ package io.tempo.teams.service.orchestrator.teams
 
 import io.tempo.teams.service.core.exceptions.TempoException
 import io.tempo.teams.service.core.exceptions.Errors
+import io.tempo.teams.service.orchestrator.roles.RolesService
 import io.tempo.teams.service.orchestrator.users.models.User
 import io.tempo.teams.service.orchestrator.teams.repositories.TeamsRepository
 import io.tempo.teams.service.orchestrator.teams.models.*
-import io.tempo.teams.service.orchestrator.teams.repositories.TeamsUsersRepository
+import io.tempo.teams.service.orchestrator.users.UsersService
 import mu.KotlinLogging
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -25,11 +26,14 @@ class TeamsService {
     private lateinit var teamsRepository: TeamsRepository
 
     @Autowired
-    private lateinit var teamsUsersRepository: TeamsUsersRepository
+    private lateinit var rolesService: RolesService
+
+    @Autowired
+    private lateinit var usersService: UsersService
 
     @PostConstruct
     fun init() {
-        LOG.debug { "Initializing the Teams' Service... Creating configs..." }
+        LOG.debug { "Initializing the Teams' Service..." }
         LOG.debug { "Loaded the Teams Service" }
     }
 
@@ -104,46 +108,16 @@ class TeamsService {
     }
 
     @Throws(TempoException::class)
-    fun addUserToTeam(id: String, user: User): TeamsUsers {
-        val team = getReference(id)
-        return addUserToTeam(team, user)
+    fun addUserToTeam(id: String, userId: String, roleId: Long = 0L) {
+        return rolesService.setUserRole(get(id), usersService.get(userId)!!, roleId)
     }
 
-    @Throws(TempoException::class, IllegalArgumentException::class)
-    fun addUserToTeam(team: Team, user: User): TeamsUsers {
-        var teamUser = try {
-            teamsUsersRepository.findById(TeamsUsersId(team.id!!, user.id!!)).get()
-
-        } catch (e: java.lang.Exception) {
-            null
-        }
-
-        if (teamUser == null) {
-            teamUser = TeamsUsers(user = user, team = team, linked = true)
-            try {
-                return teamsUsersRepository.save(teamUser)
-
-            } catch (e: java.lang.Exception) {
-                throw Errors.TEAM_LINKAGE_ERROR.exception(e.message!!)
-
-            }
-        }
-
-        teamUser.linked = false
-        return teamUser
+    @Throws(TempoException::class)
+    fun removeUserFromTeam(id: String, userId: String) {
+        return rolesService.removeUserRole(get(id), usersService.get(userId)!!)
     }
 
-    fun addUserToTeams(teams: Set<Team>?, user: User): Set<TeamsUsers> {
-        val teamsUsers = hashSetOf<TeamsUsers>()
-        teams?.forEach { team ->
-            val marketplaceEntity = addUserToTeam(team, user)
-            teamsUsers.add(marketplaceEntity)
-        }
-        return teamsUsers
+    fun getAllUsers(teamId: String): List<User>? {
+        return rolesService.getAllUsersOfTeam(teamId)
     }
-
-    fun getAllUsers(teamId: String): MutableList<TeamsUsers?> {
-        return teamsUsersRepository.findAll()
-    }
-
 }

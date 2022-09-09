@@ -5,6 +5,9 @@ import io.tempo.teams.util.validators.*
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonView
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import com.fasterxml.jackson.databind.annotation.JsonSerialize
+import io.tempo.teams.service.orchestrator.roles.models.RolesTeamsUsers
 import io.tempo.teams.service.orchestrator.users.models.User
 import java.util.*
 import javax.persistence.*
@@ -24,8 +27,8 @@ class Team {
         }
 
         @Id
-        @NotNull(groups = [ TeamsPatch::class ], message = "Field 'id' must be provided.")
-        @Column(nullable = true, updatable = true, unique = true)
+        @NotNull(groups = [ TeamsPatch::class, RoleMembershipPost::class ], message = "Field 'id' must be provided.")
+        @Column
         @JsonProperty(access = JsonProperty.Access.READ_ONLY)
         @JsonView(View.Public::class)
         var id: String? = UUID.randomUUID().toString()
@@ -36,24 +39,33 @@ class Team {
         @JsonView(View.Public::class)
         var name: String? = null
 
-        @Column(nullable = false)
         @JsonView(View.Internal::class)
-        var teamLeadId: String? = null
+        @JsonSerialize(converter = TeamLeadSerializer::class)
+        @JsonDeserialize(converter = TeamLeadDeserializer::class)
+        @JsonProperty(value = "teamLeadId")
+        @OneToOne(optional = false, fetch = FetchType.LAZY)
+        var teamLead: User? = null
+
+        @OneToMany(cascade = [ CascadeType.ALL ], fetch = FetchType.LAZY, mappedBy = "team", orphanRemoval = true)
+        @PrimaryKeyJoinColumn
+        @JsonView(View.Internal::class)
+        @JsonSerialize(converter = TeamMemberIdsSerializer::class)
+        var teamMemberIds: List<RolesTeamsUsers>? = null
 
         fun updateNotNullFields(team: Team) {
-                this.updateNotNullFields(team.id, team.name, team.teamLeadId)
+                this.updateNotNullFields(team.id, team.name, team.teamLead)
         }
 
-        fun updateNotNullFields(id: String?, name: String?, teamLeadId: String?) {
+        fun updateNotNullFields(id: String?, name: String?, teamLead: User?) {
                 if (this.id == null) {
                         this.id = id
                 }
                 name?.let { this.name = it }
-                teamLeadId?.let { this.teamLeadId = it }
+                teamLead?.let { this.teamLead = it }
         }
 
         override fun toString(): String {
-                return "Team(id=$id, name='$name', teamLeadId='$teamLeadId')"
+                return "Team(id=$id, name='$name', teamLeadId='$teamLead', users='$teamMemberIds')"
         }
 
         override fun equals(other: Any?): Boolean {

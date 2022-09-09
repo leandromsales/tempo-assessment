@@ -29,3 +29,5 @@ interface RolesPut { }
 interface RolesPatch { }
 
 interface RolesDelete { }
+
+interface RoleMembershipPost { }

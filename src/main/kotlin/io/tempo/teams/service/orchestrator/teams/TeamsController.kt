@@ -7,13 +7,11 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.tags.Tag
 import io.swagger.v3.oas.annotations.tags.Tags
 import io.tempo.teams.service.AbstractController
-import io.tempo.teams.service.orchestrator.roles.RolesService
+import io.tempo.teams.service.orchestrator.roles.models.Role
+import io.tempo.teams.service.orchestrator.roles.models.RoleMembership
 import io.tempo.teams.service.orchestrator.teams.models.Team
-import io.tempo.teams.service.orchestrator.users.UsersService
-import io.tempo.teams.util.validators.TeamsPatch
-import io.tempo.teams.util.validators.TeamsPost
-import io.tempo.teams.service.orchestrator.teams.models.TeamsUsers
-import io.tempo.teams.util.validators.View
+import io.tempo.teams.service.orchestrator.users.models.User
+import io.tempo.teams.util.validators.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
@@ -31,18 +29,11 @@ class TeamsController : AbstractController() {
         const val TEAMS_BASE = "/teams"
         const val TEAMS_WITH_ID_PATH_VARIABLE = "$TEAMS_BASE/{id}"
         const val TEAMS_USERS = "$TEAMS_BASE/{id}/users"
-        const val TEAMS_USERS_WITH_ID_PATH_VARIABLE = "$TEAMS_USERS/{userId}"
-        const val TEAMS_USERS_ROLES = "$TEAMS_USERS_WITH_ID_PATH_VARIABLE/roles"
+        const val TEAMS_ROLES = "$TEAMS_BASE/{id}/roles"
     }
 
     @Autowired
     private lateinit var teamsService: TeamsService
-
-    @Autowired
-    private lateinit var usersService: UsersService
-
-    @Autowired
-    private lateinit var rolesService: RolesService
 
     @Operation(summary = "getAll")
     @GetMapping(value = [ TEAMS_BASE], produces = ["application/json"])
@@ -55,10 +46,16 @@ class TeamsController : AbstractController() {
     }
 
     @Operation(summary = "get")
-    @RequestMapping(value = [ TEAMS_WITH_ID_PATH_VARIABLE], method = [RequestMethod.GET], produces = ["application/json"])
-    @ApiResponses(value = [
-        ApiResponse(responseCode = "200", description = "Team is found by the given id.")
-    ])
+    @RequestMapping(
+        value = [TEAMS_WITH_ID_PATH_VARIABLE],
+        method = [RequestMethod.GET],
+        produces = ["application/json"]
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Team is found by the given id.")
+        ]
+    )
     @JsonView(View.Internal::class)
     fun get(@Valid @PathVariable("id") id: String): Team {
         return teamsService.get(id)
@@ -101,15 +98,25 @@ class TeamsController : AbstractController() {
     }
 
     @Operation(summary = "addUserToTeam", description = "Add user to a team.")
-    @RequestMapping(value = [ TEAMS_USERS_WITH_ID_PATH_VARIABLE], method = [RequestMethod.POST],
-        produces = ["application/json"])
+    @PostMapping(value = [ TEAMS_ROLES], produces = ["application/json"])
     @ApiResponses(value = [
         ApiResponse(responseCode = "200", description = "User is added to the Team.")
     ])
     fun addUserToTeam(@Valid @PathVariable("id") id: String,
-                      @Valid @PathVariable("userId") userId: String) {
-        val user = usersService.get(userId)
-        user?.let { teamsService.addUserToTeam(id, it) }
+                      @Validated(RoleMembershipPost::class) @RequestBody roleMembership: RoleMembership) {
+        LOG.info { "role id: ${roleMembership.role}" }
+        if (roleMembership.role == null) roleMembership.role = Role()
+        teamsService.addUserToTeam(id, roleMembership.user?.id!!, roleMembership.role?.id!!)
+    }
+
+    @Operation(summary = "removeUserToTeam", description = "Remove user from a team.")
+    @DeleteMapping(value = [ TEAMS_ROLES], produces = ["application/json"])
+    @ApiResponses(value = [
+        ApiResponse(responseCode = "200", description = "User is removed from the Team.")
+    ])
+    fun removeUserFromTeam(@Valid @PathVariable("id") id: String,
+                           @Validated(RoleMembershipPost::class) @RequestBody roleMembership: RoleMembership) {
+        teamsService.removeUserFromTeam(id, roleMembership.user?.id!!)
     }
 
     @Operation(summary = "getAllUsers", description = "Get all users of a given team.")
@@ -121,7 +128,7 @@ class TeamsController : AbstractController() {
                     method = [RequestMethod.GET],
                     produces = ["application/json"])
     @JsonView(View.Public::class)
-    fun getAllUsers(@Valid @PathVariable("id") id: String) : List<TeamsUsers?> {
+    fun getAllUsers(@Valid @PathVariable("id") id: String) : List<User>? {
         return teamsService.getAllUsers(id)
     }
 

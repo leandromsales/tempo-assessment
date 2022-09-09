@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 import mu.KotlinLogging
 import org.apache.commons.lang3.StringUtils
+import java.util.*
 import javax.annotation.PostConstruct
 
 @Service
@@ -25,18 +26,16 @@ class UsersService {
     @Autowired
     private lateinit var usersRepository: UsersRepository
 
-    @Autowired
-    private lateinit var teamsService: TeamsService
-
     @PostConstruct
     fun init() {
-        LOG.debug { "Initializing the Users' Service... Creating configs..." }
+        LOG.debug { "Initializing the Users' Service..." }
         LOG.debug { "Loaded the Teams Service" }
     }
 
     @Throws(TempoException::class, IllegalArgumentException::class, TempoException::class)
-    fun add(user: User, teams: Set<Team>?): User? {
-        LOG.debug { "New add user request: $user $teams" }
+    fun add(user: User): User? {
+        LOG.debug { "New add user request: $user" }
+
         val foundUser = try {
             user.id?.let { get(it) }
 
@@ -51,44 +50,30 @@ class UsersService {
 
         var addedUser = save(user)
 
-        val userTeams = teamsService.addUserToTeams(teams, addedUser)
-        LOG.info("Saved user-teams object: $userTeams")
-
-        try {
-            addedUser = save(addedUser)
-
-        } catch (e: java.lang.Exception) {
-            throw Errors.USER_INVALID.exception("Erro ao adicionar usuário.", e)
-        }
-
         LOG.debug("  -> Added user: {}.", addedUser)
         return addedUser
     }
 
     @Throws(TempoException::class, IllegalArgumentException::class)
-    fun update(user: User, teams: Set<Team>?) : User {
+    fun update(user: User) : User {
         if (StringUtils.isBlank(user.id)) {
             throw Errors.USER_NOT_FOUND.exception("Id must be specified.")
         }
 
-        val founduser = get(user.id!!)
+        val foundUser = get(user.id!!)
 
-        LOG.info("Found user: $founduser")
+        LOG.info("Found user: $foundUser")
         LOG.info("Data to be updated: $user")
 
-        if (founduser?.id?.trim() != "" && user.id != null
-            && user.id?.trim() != "" && founduser?.id != user.id) {
+        if (foundUser?.id?.trim() != "" && user.id != null
+            && user.id?.trim() != "" && foundUser?.id != user.id) {
             throw Errors.USER_UPDATE_FAILURE.exception("Could not update user due to missing parameter.")
         }
 
-        founduser?.updateNotNullFields(user)
+        foundUser?.updateNotNullFields(user)
 
-        var updateduser = save(founduser!!)
+        var updateduser = save(foundUser!!)
 
-        val userTeams = teamsService.addUserToTeams(teams, updateduser)
-        LOG.info("Saved user-teams object: $userTeams")
-
-        updateduser = save(updateduser)
         LOG.debug("  -> Updated user: {}.", updateduser)
 
         return updateduser
@@ -107,8 +92,7 @@ class UsersService {
 
         } catch (e: java.lang.Exception) {
             LOG.error { "Couldn't find user by Id='${id}': ${e.message}" }
-//            throw Errors.USER_NOT_FOUND.exception("Id: $id", e)
-            return null
+            throw Errors.USER_NOT_FOUND.exception("null", e)
         }
     }
 

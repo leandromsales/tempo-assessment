@@ -29,9 +29,9 @@ import javax.validation.constraints.Null
 class User {
 
     @Id
-    @NotNull(groups = [ UsersPatch::class ], message = "Field 'id' must be provided.")
-    @Column(nullable = true, updatable = true, unique = true)
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @NotNull(groups = [ UsersPatch::class, TeamsPost::class, TeamsPatch::class, RoleMembershipPost::class ],
+        message = "Field 'id' must be provided.")
+    @Column
     @JsonView(View.Public::class)
     var id: String? = UUID.randomUUID().toString()
 
@@ -59,13 +59,13 @@ class User {
             this.displayName = this.firstName?.lowercase() + value?.capitalize()?.replace(" ", "")
         }
 
-    @Column(columnDefinition = "varchar(500)")
+    @Column(nullable = true, columnDefinition = "varchar(500)")
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @JsonView(View.Public::class)
     var displayName: String? = null
         private set
 
-    @Column(columnDefinition = "varchar(500)")
+    @Column(nullable = true, columnDefinition = "varchar(500)")
     @JsonView(View.Internal::class)
     var avatarUrl: String? = null
         set(value) {
@@ -78,7 +78,7 @@ class User {
             field = value
         }
 
-    @Column(columnDefinition = "varchar(100)")
+    @Column(nullable = true, columnDefinition = "varchar(100)")
     @JsonView(View.Internal::class)
     var location: String? = null
 
@@ -97,8 +97,7 @@ class User {
     }
 
     override fun toString(): String {
-        return "User(id=$id, firstName=$firstName, " +
-                "lastName=$lastName, avatarUrl=$avatarUrl)"
+        return "User(id=$id, firstName=$firstName, lastName=$lastName, avatarUrl=$avatarUrl)"
     }
 
     override fun equals(other: Any?): Boolean {

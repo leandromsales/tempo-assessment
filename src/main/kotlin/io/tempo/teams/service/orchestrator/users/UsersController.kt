@@ -58,7 +58,7 @@ class UsersController : AbstractController() {
     ])
     @PostMapping(value = [USER_BASE])
     fun add(@Validated(UsersPost::class) @RequestBody user: User): ResponseEntity<Any> {
-        var addedUser = usersService.add(user, null)
+        var addedUser = usersService.add(user)
         return if (addedUser != null) {
             val headers = mutableMapOf("Location" to "$USER_BASE/${addedUser.id}")
             makeResponse(addedUser, headers)
@@ -76,7 +76,7 @@ class UsersController : AbstractController() {
     @PatchMapping(value = ["${USER_BASE}/{id}"])
     fun update(@PathVariable("id") id: String, @Validated(UsersPatch::class) @RequestBody user: User): User {
         user.id = id
-        return usersService.update(user, null)
+        return usersService.update(user)
     }
 
     @Operation(summary ="delete", description = "Delete user.")
