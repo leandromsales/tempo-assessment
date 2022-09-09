@@ -1,20 +1,12 @@
 package io.tempo.teams.service.orchestrator.roles.models
 
 import com.fasterxml.jackson.annotation.JsonInclude
-import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.annotation.JsonView
 import io.tempo.teams.service.orchestrator.teams.models.Team
-import io.tempo.teams.service.orchestrator.teams.models.TeamsUsersId
 import io.tempo.teams.service.orchestrator.users.models.User
-import io.tempo.teams.util.validators.*
-import io.tempo.teams.util.validators.nullornotblank.NullOrNotBlank
 import mu.KotlinLogging
 import org.hibernate.annotations.OnDelete
 import org.hibernate.annotations.OnDeleteAction
-import java.util.*
 import javax.persistence.*
-import javax.validation.constraints.NotBlank
-import javax.validation.constraints.NotNull
 
 @Entity(name = "roles_teams_users")
 @Table(indexes = [

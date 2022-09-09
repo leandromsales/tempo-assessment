@@ -25,10 +25,9 @@ class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @NotNull(groups = [ RolesPatch::class ], message = "Field 'id' must be provided.")
-    @Column(nullable = true, updatable = true, unique = true)
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @Column
     @JsonView(View.Public::class)
-    var id: Long? = null
+    var id: Long? = 0L
 
     @field: NotBlank(message = "Field 'name' must be provided.", groups = [ RolesPost::class ])
     @field: NullOrNotBlank(message = "Field 'name' must be provided.", groups = [ RolesPatch::class ])

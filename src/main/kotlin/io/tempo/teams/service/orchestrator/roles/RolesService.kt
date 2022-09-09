@@ -9,7 +9,9 @@ import io.tempo.teams.service.orchestrator.roles.models.RolesTeamsUsersId
 import io.tempo.teams.service.orchestrator.roles.repositories.RolesRepository
 import io.tempo.teams.service.orchestrator.roles.repositories.RolesTeamsUsersRepository
 import io.tempo.teams.service.orchestrator.teams.TeamsService
+import io.tempo.teams.service.orchestrator.teams.models.Team
 import io.tempo.teams.service.orchestrator.users.UsersService
+import io.tempo.teams.service.orchestrator.users.models.User
 import mu.KotlinLogging
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -31,15 +33,9 @@ class RolesService {
     @Autowired
     private lateinit var rolesTeamsUsersRepository: RolesTeamsUsersRepository
 
-    @Autowired
-    private lateinit var teamsService: TeamsService
-
-    @Autowired
-    private lateinit var usersService: UsersService
-
     @PostConstruct
     fun init() {
-        LOG.debug { "Initializing the Roles' Service... Creating configs..." }
+        LOG.debug { "Initializing the Roles' Service..." }
         LOG.debug { "Loaded the Roles Service" }
     }
 
@@ -61,7 +57,7 @@ class RolesService {
         return try {
             rolesRepository.getReferenceById(id)
 
-        } catch (e: java.lang.Exception) {
+        } catch (e: Exception) {
             throw Errors.ROLE_NOT_FOUND.exception("Role not found with id $id: ${e.message}.", e)
         }
     }
@@ -93,7 +89,7 @@ class RolesService {
         try {
             savedRole = rolesRepository.save(savedRole!!)
 
-        } catch (e: java.lang.Exception) {
+        } catch (e: Exception) {
             val message = "Error while trying to save Role: ${e.message}"
             LOG.debug { message }
             throw Errors.ROLE_SAVE_ERROR.exception(message, e)
@@ -107,19 +103,28 @@ class RolesService {
         try {
             rolesRepository.deleteById(id)
 
-        } catch (e: java.lang.Exception) {
-            throw Errors.ROLE_DELETE_FAILURE.exception(
-                "Error while deleting Role with id '${id}': " +
-                        "${e.message}", e
-            )
+        } catch (e: Exception) {
+            throw Errors.ROLE_DELETE_FAILURE.exception("Error while deleting Role with id '${id}': ${e.message}", e)
         }
     }
 
     @Throws(TempoException::class)
-    fun setUserRole(teamId: String, userId: String, roleId: Long) {
+    fun removeUserRole(team: Team, user: User) {
+        var rolesTeamsUsers = try {
+            getRoleTeamUser(team.id!!, user.id!!)
+
+        } catch (e: Exception) {
+            throw Errors.ROLE_NOT_FOUND.exception("There is no role for user ${user.id} for team ${team.id}")
+        }
+
+        rolesTeamsUsersRepository.deleteById(rolesTeamsUsers!!.id)
+    }
+
+    @Throws(TempoException::class)
+    fun setUserRole(team: Team, user: User, roleId: Long = 0L) {
 
         var rolesTeamsUsers = try {
-            getRoleTeamUser(teamId, userId)
+            getRoleTeamUser(team.id!!, user.id!!)
 
         } catch (e: Exception) {
             null
@@ -127,10 +132,15 @@ class RolesService {
 
         var role: Role? = null
         try {
-            role = this.getReference(roleId)
+            role = if (roleId == 0L) {
+                rolesRepository.getRoleByName("Developer")
+
+            } else {
+                this.getReference(roleId)
+            }
 
         } catch (e: Exception) {
-            throw Errors.ROLE_NOT_FOUND.exception("Role id: '${roleId}'")
+                throw Errors.ROLE_NOT_FOUND.exception("Role id: '${roleId}'")
         }
 
         if (rolesTeamsUsers != null) {
@@ -138,10 +148,8 @@ class RolesService {
             rolesTeamsUsers.role = role
 
         } else {
-            val user = usersService.getReference(userId)
-            val team = teamsService.getReference(teamId)
             rolesTeamsUsers = RolesTeamsUsers()
-            rolesTeamsUsers.id = RolesTeamsUsersId(userId, teamId, roleId)
+            rolesTeamsUsers.id = RolesTeamsUsersId(user.id!!, team.id!!, roleId)
             rolesTeamsUsers.user = user
             rolesTeamsUsers.team = team
             rolesTeamsUsers.role = role
@@ -152,7 +160,7 @@ class RolesService {
 
         } catch (e: Exception) {
             throw Errors.ROLE_SET_USER.exception(
-                "Error while setting Role '${roleId}' to team '${teamId}' for user '${userId}': " +
+                "Error while setting Role '${roleId}' to team '${team.id}' for user '${user.id}': " +
                         "${e.message}", e
             )
         }
@@ -163,7 +171,7 @@ class RolesService {
         return try {
             rolesTeamsUsersRepository.getRolesTeamsUsersById_TeamIdAndId_UserId(teamId, userId)
 
-        } catch (e: java.lang.Exception) {
+        } catch (e: Exception) {
             throw Errors.ROLE_NOT_FOUND.exception("Role not found for user '${userId}' in the team '${teamId}'")
         }
     }
@@ -173,7 +181,7 @@ class RolesService {
         return try {
             getRoleTeamUser(teamId, userId)!!.role
 
-        } catch (e: java.lang.Exception) {
+        } catch (e: Exception) {
             throw Errors.ROLE_NOT_FOUND.exception("Role not found for user '${userId}' in the team '${teamId}'")
         }
     }
@@ -189,8 +197,24 @@ class RolesService {
             }
             result
 
-        } catch (e: java.lang.Exception) {
+        } catch (e: Exception) {
             throw Errors.ROLE_NOT_FOUND.exception("Role not found for id '${roleId}'")
+        }
+    }
+
+    @Throws(TempoException::class)
+    fun getAllUsersOfTeam(teamId: String): List<User>? {
+        val result = mutableListOf<User>()
+
+        return try {
+            val rolesTeamsUsers = rolesTeamsUsersRepository.getRolesTeamsUsersById_TeamId(teamId)
+            rolesTeamsUsers.forEach { instance: RolesTeamsUsers ->
+                result.add(instance.user!!)
+            }
+            result
+
+        } catch (e: Exception) {
+            throw Errors.TEAM_NOT_FOUND.exception("Team not found for id '${teamId}'")
         }
     }
 

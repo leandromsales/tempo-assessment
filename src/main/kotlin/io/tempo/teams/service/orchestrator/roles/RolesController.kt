@@ -90,17 +90,6 @@ class RolesController : AbstractController() {
         return makeResponse()
     }
 
-    @Operation(summary = "setUserRole", description = "Set user role.")
-    @RequestMapping(value = [TeamsController.TEAMS_USERS_ROLES], method = [RequestMethod.POST], produces = ["application/json"])
-    @ApiResponses(value = [
-        ApiResponse(responseCode = "200", description = "Role is set to the User for this team.")
-    ])
-    fun setUserRole(@Valid @PathVariable("id") id: String,
-                    @Valid @PathVariable("userId") userId: String,
-                    @Valid @RequestParam("roleId") roleId: Long) {
-        rolesService.setUserRole(id, userId, roleId)
-    }
-
     @Operation(summary ="getMembership", description = "A Membership role of a user in a team.")
     @ApiResponses(value = [
         ApiResponse(responseCode = "200", description = "The user role."),
