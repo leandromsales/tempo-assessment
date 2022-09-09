@@ -1,12 +1,8 @@
-package io.tempo.teams.service.bootstrap
+package io.tempo.teams.bootstrap
 
 import io.tempo.teams.autoconfig.RolesBootstrapProperties
-import io.tempo.teams.autoconfig.TeamsBootstrapProperties
-import io.tempo.teams.bootstrap.AbstractRepositoryBootstrap
 import io.tempo.teams.service.orchestrator.roles.RolesService
 import io.tempo.teams.service.orchestrator.roles.models.Role
-import io.tempo.teams.service.orchestrator.teams.models.Team
-import io.tempo.teams.service.orchestrator.teams.TeamsService
 import mu.KotlinLogging
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
@@ -17,7 +13,7 @@ import javax.annotation.PostConstruct
 
 @Component(value = "RolesRepositoryBootstrap")
 @ConditionalOnProperty(
-    value = [TeamsBootstrapProperties.PROPERTY_ROOT_PREFIX + ".bootstrapData"],
+    value = [RolesBootstrapProperties.PROPERTY_ROOT_PREFIX + ".bootstrapData"],
     havingValue = "true",
     matchIfMissing = false
 )
