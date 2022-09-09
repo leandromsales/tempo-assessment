@@ -75,7 +75,9 @@ As a result of executing the app, you will see some outputs similar to the follo
 ## Technology Stack
 
 - Kotlin 1.6
+- Spring 5.3.2
 - Spring Boot 2.7.8
+- Spring Docs
 - Docker (including Docker Compose)
 - HSQLDB (it could be also any other relational database)
 
@@ -99,6 +101,8 @@ The OpenAPI 3.0 documentation is available in the following URL:
 You can use openapi.yaml and import the API directly to the Postman, resulting on this:
 
 <img width="1130" alt="image" src="https://user-images.githubusercontent.com/1322483/188510155-26860c45-afc1-4044-8db8-c3d9166eb6c3.png">
+
+Alternatively, you can use the Postman collection I have already imported, which is available at [https://www.getpostman.com/collections/e8b849c6f9d26b6def2c](https://www.getpostman.com/collections/8b94a3131d9c00f4bd0c)
 
 ### Swagger Documentation:
 
