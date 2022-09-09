@@ -48,6 +48,8 @@ class UsersService {
                     "update user info.")
         }
 
+        user.id = UUID.randomUUID().toString()
+
         var addedUser = save(user)
 
         LOG.debug("  -> Added user: {}.", addedUser)
