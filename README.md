@@ -41,10 +41,10 @@ team id (method io.tempo.teams.roles.RolesController.lookupUserRole)
 
 I have implemented docker/docker-compose to run the application. I have implemented a bash script to run everything all commands or you can execute each step (build, test and run) separately. 
 
-### All in one (build, test and run)
+### All in one (test, build and run)
 
 ```shell
-./build-and-run.sh
+./build-test-run.sh
 ```
 
 ### Step 1: Build the app
