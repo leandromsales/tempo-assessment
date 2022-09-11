@@ -103,7 +103,7 @@ You can use openapi.yaml and import the API directly to the Postman, resulting o
 
 <img width="1130" alt="image" src="https://user-images.githubusercontent.com/1322483/188510155-26860c45-afc1-4044-8db8-c3d9166eb6c3.png">
 
-Alternatively, you can use the Postman collection I have already imported, which is available at [https://www.getpostman.com/collections/e8b849c6f9d26b6def2c](https://www.getpostman.com/collections/8b94a3131d9c00f4bd0c)
+Alternatively, you can use the Postman collection I have already imported, which is available at [https://www.getpostman.com/collections/e8b849c6f9d26b6def2c](https://www.getpostman.com/collections/8b94a3131d9c00f4bd0c) and provides automated API tests using Javascript.
 
 ### Swagger Documentation:
 
