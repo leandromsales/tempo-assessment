@@ -78,7 +78,7 @@ As a result of executing the app, you will see some outputs similar to the follo
 - Kotlin 1.6
 - Spring 5.3.2
 - Spring Boot 2.7.8
-- Spring Docs
+- Spring Docs 1.6
 - Docker (including Docker Compose)
 - HSQLDB (it could be also any other relational database)
 
