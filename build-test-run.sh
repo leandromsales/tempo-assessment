@@ -1,13 +1,12 @@
-echo ">>> Running gradle tests..."
-gradle test 
-
 echo ">>> Running gradle build..."
+gradle build -x test
+
 if [ $? == 0 ];
 then
-    echo ">>> Building container..."
-    gradle build -x test
+    echo ">>> Running gradle tests..."
+    gradle test 
 else
-    echo "Error executing tests. Unable to build the application."
+    echo "Error building application."
 fi
 
 if [ $? == 0 ];
@@ -15,7 +14,7 @@ then
     echo ">>> Building container..."
     docker build -t tempo/services/orchestrator .
 else
-    echo "Error building application."
+    echo "Error executing tests."
 fi
 
 if [ $? == 0 ];
