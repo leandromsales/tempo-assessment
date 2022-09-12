@@ -25,7 +25,7 @@ I have implemented the solution of supporting the concept of Role by adding a Ro
 - [x] Fields validations and view layer modifications using Spring Boot Validation and Annotations, including the development of our custom validation annotations (examples available in io.tempo.teams.util.validators);  
 - [x] Unit tests using JUnit 5 and Gradle (see below);
 - [x] API automation tests implemented using Postman;
-- [x] Implementation of a bootstrap data machanism based on yaml (eg. to add pre-defined roles);
+- [x] Implementation of a bootstrap data mechanism based on yaml (eg. to add pre-defined roles);
 - [x] Ability to associate team members with roles for a team.
 
 ### Extra points activities implemented
@@ -36,6 +36,20 @@ team id (method io.tempo.teams.roles.RolesController.lookupUserRole)
 - [x] Create a new role (method io.tempo.teams.roles.RolesController.add)
 - [x] Assign a role to a member (method io.tempo.teams.roles.RolesController.setUserRole)
 - [ ] (Need more time for that) A React web app written in TypeScript that uses the APIs implemented 
+
+## Application Settings
+
+In addition, I have decided to import the current online data to a local database in order to show my skills related to implement web clients using Feign.
+
+For that, I have provided some parameters in the application settings (application.yaml) to set the max number of instances (users and teams) to load from the Tempo online API. Current, the application runs bootstrap components and their settings can be controlled by defining some properties, as following:
+
+- `io.tempo.teams.bootstrap.enabled (boolean, default is false)` - toogle to load bootstrap or not
+- `io.tempo.teams.bootstrap.users.bootstrapData (boolean, default is false)` - toogle to load users online data
+- `io.tempo.teams.bootstrap.teams.bootstrapData (boolean, default is false)` - toogle to load teams online data
+- `io.tempo.teams.bootstrap.users.quantity (integer, default is the max found)` - define the max number of users instance to load from online data
+- `io.tempo.teams.bootstrap.teams.quantity (integer, default is the max found)` - define the max number of users instance to load from online data
+
+Alternatively, you can set env variables instead of change the `application.yaml`. For example, to enable bootstrap you can set the env variable `IO_TEMPO_TEAMS_BOOTSTRAP_ENABLED`.
 
 ## Run the application
 
@@ -64,7 +78,7 @@ docker build -t tempo/services/orchestrator .
 
 ### Step 4: Run the app
 ```shell
-docker-compose up
+docker-compose up --build
 ```
 
 ## Logs and Output
