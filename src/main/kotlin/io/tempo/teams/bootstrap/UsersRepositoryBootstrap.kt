@@ -60,21 +60,4 @@ class UsersRepositoryBootstrap : AbstractRepositoryBootstrap() {
         LOG.info("Finished Bootstrapping of Users Repository.")
     }
 
-//    fun add(user: User): User? {
-//        LOG.debug("  -> Preparing instance {} to load...", user)
-//        val newUser = usersService.add(user)
-//        LOG.debug("  -> User added: $newUser")
-//        return newUser
-//    }
-//
-//    fun update(user: User): User? {
-//        val updatedUser = usersService.update(user)
-//        LOG.debug("  -> User updated: $updatedUser")
-//        return updatedUser
-//    }
-//
-//    fun delete(id: String) {
-//        usersService.delete(id)
-//        LOG.debug("  -> User deleted.")
-//    }
 }

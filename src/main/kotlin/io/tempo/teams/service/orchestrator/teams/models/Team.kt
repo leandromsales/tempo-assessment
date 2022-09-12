@@ -17,9 +17,6 @@ import mu.KotlinLogging
 import javax.annotation.PostConstruct
 
 @Entity(name = "teams")
-@Table(indexes = [
-        Index(name = "teams_name_idx", columnList = "name", unique = true)
-])
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 class Team {
 
@@ -35,7 +32,7 @@ class Team {
 
         @field: NotBlank(message = "Field 'name' must be provided.", groups = [ TeamsPost::class ])
         @field: NullOrNotBlank(message = "Field 'name' must be provided.", groups = [ TeamsPatch::class ])
-        @Column(nullable = false)
+        @Column(nullable = false, unique = true)
         @JsonView(View.Public::class)
         var name: String? = null
 

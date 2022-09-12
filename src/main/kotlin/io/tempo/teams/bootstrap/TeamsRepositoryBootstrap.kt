@@ -54,7 +54,7 @@ class TeamsRepositoryBootstrap : AbstractRepositoryBootstrap() {
 
                 try {
                     LOG.debug("(Team $i of [max(${teams.size}, ${teamsBootstrapProperties.quantity})]) Adding team ${team.id}")
-                    val teamDetailed = teamsApiClient.get(team.id!!)
+                    val teamDetailed = teamsApiClient.get(team.id)
 
                     val teamToSave = Team()
                     teamToSave.id = teamDetailed.id
@@ -88,21 +88,4 @@ class TeamsRepositoryBootstrap : AbstractRepositoryBootstrap() {
         LOG.info("Finished Bootstrapping of Teams Repository.")
     }
 
-//    fun add(team: Team): Team? {
-//        LOG.debug("  -> Preparing instance {} to load...", team)
-//        val newTeam = teamsService.add(team)
-//        LOG.debug("  -> Team added: $newTeam")
-//        return newTeam
-//    }
-//
-//    fun update(team: Team): Team? {
-//        val updatedTeam = teamsService.update(team)
-//        LOG.debug("  -> Team updated: $updatedTeam")
-//        return updatedTeam
-//    }
-//
-//    fun delete(id: String) {
-//        teamsService.delete(id)
-//        LOG.debug("  -> Team deleted.")
-//    }
 }

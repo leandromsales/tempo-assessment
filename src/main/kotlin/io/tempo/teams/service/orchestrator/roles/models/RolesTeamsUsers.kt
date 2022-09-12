@@ -10,7 +10,7 @@ import javax.persistence.*
 
 @Entity(name = "roles_teams_users")
 @Table(indexes = [
-    Index(name = "roles_teams_users_idx", columnList = "user_id,team_id,role_id", unique = true)]
+    Index(name = "roles_teams_users_idx", columnList = "user_id,team_id", unique = true)]
 )
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 class RolesTeamsUsers {

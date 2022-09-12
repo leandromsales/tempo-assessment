@@ -94,7 +94,7 @@ abstract class AbstractController : ResponseEntityExceptionHandler() {
         LOG.debug { "Underlying error with exception instance ${ex.javaClass.canonicalName}: ${ex.message}" }
         return when (ex) {
             is MissingRequestHeaderException -> {
-                val matcher = Pattern.compile("'(.*)'").matcher(ex.message!!)
+                val matcher = Pattern.compile("'(.*)'").matcher(ex.message)
                 val fieldName = if (matcher.find()) matcher.group(1) else ""
                 val exception = Errors.GENERAL_MISSING_ARGUMENT.exception("")
                 exception.model.addField("field", fieldName)
@@ -109,8 +109,8 @@ abstract class AbstractController : ResponseEntityExceptionHandler() {
             }
 
             is DataIntegrityViolationException -> {
-                // TODO: finish the implementation of data integrity violation exceptions
-                val CONSTRAINS_I18N_MAP = mapOf("user_id_idx" to "User with this id already exists.")
+//                // TODO: finish the implementation of data integrity violation exceptions
+//                val CONSTRAINS_I18N_MAP = mapOf("user_id_idx" to "User with this id already exists.")
                 val exception = Errors.GENERAL_VALUE_INVALID.exception(ex.message!!)
                 exception.addField("original_exception", ex.javaClass.canonicalName)
                 handle(exception, request)

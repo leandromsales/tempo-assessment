@@ -43,7 +43,8 @@ class User {
     var firstName: String? = null
         set(value) {
             field = value
-            this.displayName = value?.lowercase()?.replace(" ", "") + this.lastName?.capitalize()
+            this.displayName = value?.lowercase()?.replace(" ", "") +
+                    this.lastName?.replaceFirstChar { it.uppercase() }
         }
 
     @NotBlankWithMinMax(min = 3, max = 300, message = "The field 'lastName' must have at least 3 chars and max " +
@@ -55,7 +56,8 @@ class User {
     var lastName: String? = null
         set(value) {
             field = value
-            this.displayName = this.firstName?.lowercase() + value?.capitalize()?.replace(" ", "")
+            this.displayName = this.firstName?.lowercase() +
+                    value?.replaceFirstChar { it.uppercase() }?.replace(" ", "")
         }
 
     @Column(nullable = true, columnDefinition = "varchar(500)")

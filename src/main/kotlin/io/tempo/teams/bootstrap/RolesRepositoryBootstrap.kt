@@ -34,7 +34,7 @@ class RolesRepositoryBootstrap : AbstractRepositoryBootstrap() {
         LOG.debug("  -> Starting bootstrap of Roles.")
         LOG.debug("  -> Roles Bootstrap data: {}", properties.bootstrapInstances)
 
-        properties?.bootstrapInstances?.forEach { instance: Role ->
+        properties.bootstrapInstances.forEach { instance: Role ->
             try {
                 LOG.debug("  -> Saving instance {}: ", instance)
                 val rolesSavedInstance = rolesService.save(instance)

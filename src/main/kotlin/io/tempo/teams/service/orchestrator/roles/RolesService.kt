@@ -130,7 +130,7 @@ class RolesService {
             null
         }
 
-        var role: Role? = null
+        var role: Role?
         try {
             role = if (roleId == 0L) {
                 rolesRepository.getRoleByName("Developer")

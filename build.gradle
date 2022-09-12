@@ -46,10 +46,6 @@ bootJar {
     version = project.version
 }
 
-jar {
-    archiveFileName = "teams-services-orchestrator.jar"
-}
-
 group = "io.tempo.services"
 version = '1.0.0-RELEASE'
 

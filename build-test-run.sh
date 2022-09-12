@@ -12,7 +12,7 @@ fi
 if [ $? == 0 ];
 then
     echo ">>> Building container..."
-    docker build -t tempo/services/orchestrator .
+    docker build --no-cache -t tempo/services/orchestrator .
 else
     echo "Error executing tests."
 fi
