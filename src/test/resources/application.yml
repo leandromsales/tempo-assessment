@@ -14,3 +14,13 @@ spring:
       naming:
         implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+
+io:
+  tempo:
+    teams:
+      bootstrap:
+        users:
+          bootstrapData: false
+
+        teams:
+          bootstrapData: false
