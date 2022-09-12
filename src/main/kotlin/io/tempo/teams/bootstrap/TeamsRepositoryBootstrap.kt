@@ -53,7 +53,7 @@ class TeamsRepositoryBootstrap : AbstractRepositoryBootstrap() {
                 i++
 
                 try {
-                    LOG.debug("(Team $i of [max(${teams.size}, ${teamsBootstrapProperties.quantity})]) Adding team ${team.id}")
+                    LOG.debug("Importing Team $i of min(${teams.size}, ${teamsBootstrapProperties.quantity})...")
                     val teamDetailed = teamsApiClient.get(team.id)
 
                     val teamToSave = Team()

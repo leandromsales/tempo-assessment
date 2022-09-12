@@ -52,11 +52,11 @@ io:
 
         users:
           bootstrapData: true
-          quantity: 500
+          quantity: 100
 
         teams:
           bootstrapData: true
-          quantity: 100
+          quantity: 10
 
         roles:
           bootstrapData: true

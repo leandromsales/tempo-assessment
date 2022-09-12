@@ -20,7 +20,7 @@ fi
 if [ $? == 0 ];
 then
     echo ">>> Running containers..."
-    docker-compose up
+    docker-compose up --build
 else
     echo "Error building docker image."
 fi

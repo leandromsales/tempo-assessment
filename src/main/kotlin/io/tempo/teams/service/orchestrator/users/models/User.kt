@@ -23,7 +23,6 @@ import javax.validation.constraints.Null
     Index(name = "user_lastName_idx", columnList = "lastName", unique = false),
 ])
 @Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn(name="type")
 @JsonIgnoreProperties(value = ["hibernateLazyInitializer"])
 class User {
 

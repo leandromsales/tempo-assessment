@@ -6,7 +6,6 @@ networks:
  
 services:
 
-  # the orchestrator service
   orchestrator:
     build:
       context: .
