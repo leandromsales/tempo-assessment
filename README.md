@@ -141,6 +141,7 @@ http://localhost:8080/actuator
    - Search user by attributes
    - Validate avatarUrl when POST/PATCH a user
 4. Teams
+   - The concept of team leader could be changed to Role, where a Role called Team Leader is created. That will can allow (or not) a team has multiple leaders.
    - Support a user to create multiple teams
    - Categorization
    - Get Teams a user is the leader
