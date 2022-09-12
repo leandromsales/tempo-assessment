@@ -39,7 +39,7 @@ class UsersService {
         val foundUser = try {
             user.id?.let { get(it) }
 
-        } catch (e: java.lang.Exception) {
+        } catch (e: Exception) {
             null
         }
 
@@ -48,9 +48,11 @@ class UsersService {
                     "update user info.")
         }
 
-        user.id = UUID.randomUUID().toString()
+        if (user.id == null) {
+            user.id = UUID.randomUUID().toString()
+        }
 
-        var addedUser = save(user)
+        val addedUser = save(user)
 
         LOG.debug("  -> Added user: {}.", addedUser)
         return addedUser
@@ -89,11 +91,9 @@ class UsersService {
     @Throws(TempoException::class)
     fun get(id: String): User? {
         return try {
-            LOG.debug { "Searching for user with ID='${id}'" }
             usersRepository.findById(id).get()
 
         } catch (e: java.lang.Exception) {
-            LOG.error { "Couldn't find user by Id='${id}': ${e.message}" }
             throw Errors.USER_NOT_FOUND.exception("null", e)
         }
     }

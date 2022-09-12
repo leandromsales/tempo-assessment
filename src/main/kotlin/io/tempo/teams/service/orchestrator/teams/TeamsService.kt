@@ -64,6 +64,10 @@ class TeamsService {
     @Throws(TempoException::class)
     fun save(team: Team) : Team {
 
+        if (team.teamLead == null) {
+            throw Errors.TEAM_MISSING_TEAM_LEADER.exception("A team leader must be provided.")
+        }
+
         if (team.id == null) {
             team.id = UUID.randomUUID().toString()
         }
@@ -81,16 +85,16 @@ class TeamsService {
 
         if (savedTeam == null) {
             savedTeam = team
-            LOG.debug { "Team added: $savedTeam" }
 
         } else {
             LOG.debug { "Found team for updating: $savedTeam" }
             savedTeam!!.updateNotNullFields(team)
-            LOG.debug { "Team updated: $savedTeam" }
         }
 
         try {
+            LOG.debug { "Team to be added or updated: $savedTeam" }
             savedTeam = teamsRepository.save(savedTeam!!)
+            LOG.debug { "Team added or updated." }
 
         } catch (e: java.lang.Exception) {
             val message = "Error while trying to save team: ${e.message}"

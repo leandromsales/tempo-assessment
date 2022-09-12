@@ -44,7 +44,7 @@ class UsersRepositoryBootstrap : AbstractRepositoryBootstrap() {
                 i++
 
                 try {
-                    LOG.debug("Adding user ${user.id}")
+                    LOG.debug("(User $i of [max(${users.size}, ${usersBootstrapProperties.quantity})]) Adding user ${user.id}")
                     val userDetailed = usersApiClient.get(user.id!!)
                     usersService.add(userDetailed)
 

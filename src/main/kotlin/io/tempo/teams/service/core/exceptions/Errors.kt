@@ -7,8 +7,8 @@ import java.lang.IllegalArgumentException
 // TODO: add missing error description
 // TODO: what is the best way to deal with erro code and responses
 
-enum class Errors(private val value: Int, private val description: String, val httpStatus: HttpStatus? = null,
-                  private val exceptionClass: Class<*>? = null) {
+enum class Errors(val value: Int, val description: String, val httpStatus: HttpStatus? = null,
+                  val exceptionClass: Class<*>? = null) {
 
     // General erro codes
     GENERAL_NO_ERROR(0, "Success"),
@@ -25,7 +25,8 @@ enum class Errors(private val value: Int, private val description: String, val h
     TEAM_LINKAGE_ERROR(1004, "Error trying to link entity to the team.", HttpStatus.CONFLICT),
     TEAM_USER_NOT_LINKED(1005, "Entity is not linked to the team.", HttpStatus.BAD_REQUEST),
     TEAM_SAVE_ERROR(1006, "Error on saving team.", HttpStatus.CONFLICT),
-    TEAM_DELETE_FAILURE(2008, "Failure deleting team."),
+    TEAM_DELETE_FAILURE(1007, "Failure deleting team."),
+    TEAM_MISSING_TEAM_LEADER(1008, "Missing team leader.", HttpStatus.CONFLICT),
 
     // User
     USER_ID_ALREADY_IN_USE(2000, "", HttpStatus.CONFLICT),

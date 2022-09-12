@@ -18,8 +18,8 @@ import javax.annotation.PostConstruct
 
 @Entity(name = "teams")
 @Table(indexes = [
-        Index(name = "teams_name_idx", columnList = "name", unique = true)]
-)
+        Index(name = "teams_name_idx", columnList = "name", unique = true)
+])
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 class Team {
 
@@ -43,7 +43,8 @@ class Team {
         @JsonSerialize(converter = TeamLeadSerializer::class)
         @JsonDeserialize(converter = TeamLeadDeserializer::class)
         @JsonProperty(value = "teamLeadId")
-        @OneToOne(optional = false, fetch = FetchType.LAZY)
+        @OneToOne(optional = true, fetch = FetchType.LAZY)
+        @JoinColumn(foreignKey = ForeignKey(name = "teams_users_teamLeader_id_fk"))
         var teamLead: User? = null
 
         @OneToMany(cascade = [ CascadeType.ALL ], fetch = FetchType.LAZY, mappedBy = "team", orphanRemoval = true)
@@ -65,7 +66,7 @@ class Team {
         }
 
         override fun toString(): String {
-                return "Team(id=$id, name='$name', teamLeadId='$teamLead', users='$teamMemberIds')"
+                return "Team(id=$id, name='$name', teamLeadId='$teamLead', teamMembers='$teamMemberIds')"
         }
 
         override fun equals(other: Any?): Boolean {

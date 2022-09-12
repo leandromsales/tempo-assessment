@@ -18,7 +18,6 @@ import javax.validation.constraints.NotNull
 import javax.validation.constraints.Null
 
 @Entity(name = "users")
-@OnDelete(action = OnDeleteAction.CASCADE)
 @Table(indexes = [
     Index(name = "user_firstName_idx", columnList = "firstName", unique = false),
     Index(name = "user_lastName_idx", columnList = "lastName", unique = false),
