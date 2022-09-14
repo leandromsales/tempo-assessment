@@ -39,7 +39,7 @@ team id (method io.tempo.teams.roles.RolesController.lookupUserRole)
 
 ## Application Settings
 
-In addition, I have decided to import the current online data to a local database in order to show my skills related to implement web clients using Feign.
+I have decided to import the current online data to a local database in order to show my skills related to implement web clients using Feign.
 
 For that, I have provided some parameters in the application settings (application.yaml) to set the max number of instances (users and teams) to load from the Tempo online API. Current, the application runs bootstrap components and their settings can be controlled by defining some properties, as following:
 
@@ -47,13 +47,13 @@ For that, I have provided some parameters in the application settings (applicati
 - `io.tempo.teams.bootstrap.users.bootstrapData (boolean, default is false)` - toogle to load users online data
 - `io.tempo.teams.bootstrap.teams.bootstrapData (boolean, default is false)` - toogle to load teams online data
 - `io.tempo.teams.bootstrap.users.quantity (integer, default is the max found)` - define the max number of users instance to load from online data
-- `io.tempo.teams.bootstrap.teams.quantity (integer, default is the max found)` - define the max number of users instance to load from online data
+- `io.tempo.teams.bootstrap.teams.quantity (integer, default is the max found)` - define the max number of teams instance to load from online data
 
 Alternatively, you can set env variables instead of change the `application.yaml`. For example, to enable bootstrap you can set the env variable `IO_TEMPO_TEAMS_BOOTSTRAP_ENABLED`.
 
 ## Run the application
 
-I have implemented docker/docker-compose to run the application. I have implemented a bash script to run everything all commands or you can execute each step (build, test and run) separately. 
+I have implemented docker/docker-compose to run the application. I have implemented a bash script to run all commands at once or you can execute each step (build, test and run) separately. 
 
 ### All in one (test, build and run)
 
@@ -168,3 +168,4 @@ http://localhost:8080/actuator
 8. Return a better structure for not found requests (eg. getting a user that id is not in the database). Nowadays we are return null.
 9. Add more unit tests
 10. Implement CI/CD pipilines & Gitflow
+11. Implement the API using asynchronous event-driven requests (use WebFlux)
