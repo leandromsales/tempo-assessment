@@ -169,3 +169,4 @@ http://localhost:8080/actuator
 9. Add more unit tests
 10. Implement CI/CD pipilines & Gitflow
 11. Implement the API using asynchronous event-driven requests (use WebFlux)
+12. Use Spring Security to handle admin operations and role management.
